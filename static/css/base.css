@@ -1,0 +1,103 @@
+/* CONSTANTS */
+:root {
+    --text: #0f0c08;
+    --background: #f8f5f2;
+    --primary: #a78666;
+    --secondary: #add0b7;
+    --accent: #86bab0;
+}
+:root[data-theme="dark"] {
+    --text: #f6f3ee;
+    --background: #0d0a07;
+    --primary: #987857;
+    --secondary: #2f5138;
+    --accent: #45786e;
+}
+
+body {
+    font-family: system-ui, sans-serif;
+    color: var(--text);
+    margin: 0;
+    background-color: var(--background) !important;
+}
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px;
+    background: var(--secondary);
+    border-bottom: 1px solid #333;
+}
+.logo {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 20px;
+}
+.nav-link {
+    color: #ddd;
+    text-decoration: none;
+    margin: 0 10px;
+}
+.nav-link:hover {
+    color: #fff;
+}
+.language-form {
+    display: inline-block;
+}
+.btn-lang {
+    background: none;
+    border: 1px solid #666;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    color: #eee;
+    background-color: #222;
+    transition: background 0.2s;
+}
+.btn-lang:hover {
+    background: #333;
+}
+.container {
+    padding: 30px;
+}
+.footer {
+    text-align: center;
+    padding: 20px 0;
+    border-top: 1px solid #333;
+    font-size: 14px;
+    color: #888;
+}
+
+/* TOAST */
+.toast {
+    min-width: 250px;
+    max-width: 350px;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    color: white;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transform: translateX(120%);
+    opacity: 0;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+}
+
+/* Couleurs selon type */
+.toast-success { background-color: #198754b6 !important; }
+.toast-error   { background-color: #dc3545b6 !important; }
+.toast-info    { background-color: #0d6efdb6 !important; }
+
+.toast.show { transform: translateX(0); opacity: 1; }
+.toast.hide { transform: translateX(120%); opacity: 0; }
+
+/* Icône simple */
+.toast .toast-icon {
+    font-weight: bold;
+    font-size: 1.2rem;
+}

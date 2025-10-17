@@ -1,0 +1,209 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-18 00:24+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+#: movies/templates/movies/details.html:29
+msgid "Trailer"
+msgstr "Bande-annonce"
+
+#: movies/templates/movies/details.html:31
+msgid "Trailer for {{ title }}"
+msgstr "Bande-annonce de {{ title }}"
+
+#: movies/templates/movies/details.html:42
+#: movies/templates/movies/details.html:61
+#: movies/templates/movies/details.html:81
+msgid "No image"
+msgstr "Aucune image"
+
+#: movies/templates/movies/details.html:50
+msgid "Available on"
+msgstr "Disponible sur"
+
+#: movies/templates/movies/details.html:52
+msgid "Subscription"
+msgstr "Abonnement"
+
+#: movies/templates/movies/details.html:72
+msgid "Rent / Buy"
+msgstr "Louer / Acheter"
+
+#: movies/templates/movies/details.html:91
+msgid "Not yet available for streaming in this country."
+msgstr "Pas encore disponible en streaming dans ce pays."
+
+#: movies/templates/movies/details.html:95
+#, python-format
+msgid ""
+"\n"
+"                Country: <span class=\"fw-medium text-dark\">%(tmdb_lang)s</"
+"span></p>\n"
+"            "
+msgstr ""
+"\n"
+"                Pays : <span class=\"fw-medium text-dark\">%(tmdb_lang)s</"
+"span></p>\n"
+"            "
+
+#: movies/templates/movies/details.html:104
+msgid "Add to a watchlist"
+msgstr "Ajouter à une watchlist"
+
+#: movies/templates/movies/details.html:125
+msgid "Aucune watchlist"
+msgstr "Aucune watchlist"
+
+#: movies/templates/movies/details.html:130
+msgid "Connecte-toi pour ajouter"
+msgstr "Connecte-toi pour ajouter"
+
+#: movies/templates/movies/search.html:4
+#: movies/templates/movies/search.html:12
+#: wannawatch/templates/base.html:35
+msgid "Search"
+msgstr "Rechercher"
+
+#: movies/templates/movies/search.html:8
+msgid "🔎 Search for movies & series"
+msgstr "🔎 Recherche de films et séries"
+
+#: movies/templates/movies/search.html:11
+msgid "Title of movie or serie..."
+msgstr "Titre du film ou de la série..."
+
+#: movies/templates/movies/search.html:17
+#, python-format
+msgid ""
+"\n"
+"        Results for \"<strong>%(q)s</strong>\":\n"
+"      "
+msgstr ""
+"\n"
+"        Résultats pour « <strong>%(q)s</strong> » :\n"
+"      "
+
+#: movies/templates/movies/search.html:44
+#, python-format
+msgid ""
+"\n"
+"      <p class=\"text-center text-light mt-4\">No result for %(q)s 😕</p>\n"
+"    "
+msgstr ""
+"\n"
+"      <p class=\"text-center text-light mt-4\">Aucun résultat pour %(q)s 😕</p>\n"
+"    "
+
+#: users/models.py:28
+msgid "Email"
+msgstr "Email"
+
+#: users/models.py:29
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+#: users/models.py:30
+msgid "Biography"
+msgstr "Biographie"
+
+#: users/models.py:31
+msgid "Avatar"
+msgstr "Avatar"
+
+#: wannawatch/templates/base.html:36
+msgid "Profile"
+msgstr "Profil"
+
+#: wannawatch/templates/base.html:58
+msgid "All rights reserved"
+msgstr "Tous droits réservés"
+
+#: watchlists/models.py:17
+msgid "Members"
+msgstr "Membres"
+
+#: watchlists/models.py:19
+#: watchlists/templates/watchlists/create.html:26
+msgid "Name"
+msgstr "Nom"
+
+#: watchlists/models.py:20
+#: watchlists/templates/watchlists/create.html:34
+msgid "Description"
+msgstr "Description"
+
+#: watchlists/models.py:21
+msgid "privacy"
+msgstr "confidentialité"
+
+#: watchlists/models.py:23
+msgid "Created at"
+msgstr "Créé le"
+
+#: watchlists/templates/watchlists/create.html:4
+msgid "Create a Watchlist"
+msgstr "Créer une watchlist"
+
+#: watchlists/templates/watchlists/create.html:14
+msgid "Create a New Watchlist"
+msgstr "Créer une nouvelle watchlist"
+
+#: watchlists/templates/watchlists/create.html:42
+msgid "Privacy"
+msgstr "Confidentialité"
+
+#: watchlists/templates/watchlists/create.html:51
+msgid "Create Watchlist"
+msgstr "Créer la watchlist"
+
+#: watchlists/templates/watchlists/create.html:58
+msgid "Back to my watchlists"
+msgstr "Retour à mes watchlists"
+
+#: watchlists/templates/watchlists/detail.html:15
+msgid "No movies yet."
+msgstr "Aucun film pour le moment."
+
+#: watchlists/templates/watchlists/list.html:6
+msgid "New Watchlist"
+msgstr "Nouvelle watchlist"
+
+#: watchlists/templates/watchlists/list.html:13
+msgid "No watchlists yet."
+msgstr "Aucune watchlist pour le moment."
+
+#: watchlists/templates/watchlists/partials/watchlist_item.html:12
+msgid "✓ Watched"
+msgstr "✓ Vu"
+
+#: watchlists/templates/watchlists/partials/watchlist_item.html:12
+msgid "Mark watched"
+msgstr "Marquer comme vu"
+
+#: watchlists/views.py:91
+msgid "Access denied."
+msgstr "Accès refusé."
+
+#: watchlists/views.py:131
+#, python-format
+msgid "'%(title)s' is already in '%(watchlist)s'"
+msgstr "'%(title)s' est déjà dans « %(watchlist)s »"
+
+#: watchlists/views.py:137
+#, python-format
+msgid "'%(title)s' added to '%(watchlist)s'"
+msgstr "'%(title)s' a été ajouté à « %(watchlist)s »"

@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load time_filters %}
+{% block title %}WannaWatch - {{ title }} {% endblock %}
+
+{% block content%}
+<div class="movie-details">
+  {% if backdrop %}
+    <div class="position-relative bg-dark text-white rounded" style="background-image: url('{{ backdrop }}'); background-size: cover; background-position: center; height:50vh;">
+      <div class="position-absolute bottom-0 w-100 p-4 rounded" style="background: linear-gradient(transparent, rgba(0,0,0,0.8));">
+        <h1 class="h3 h-md-1 fw-bold mb-1">{{ title }}</h1>
+        <p class="mb-1 text-muted small">{{ genres|join:", " }}</p>
+        <p class="mb-0 small">⭐ {{ vote_average }} — {{ release_date }}{% if runtime %} — {{ runtime | duration_format}}{% endif %}</p>
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="container my-4">
+    <div class="row g-4 align-items-start">
+        <div class="col-12 col-md-4 col-lg-3 text-center sticky-top" style="top: 1.25rem;">
+            <img src="{{ poster }}" alt="{{ title }} poster" class="img-fluid rounded">
+        </div>
+
+      <div class="col-12 col-md-8 col-lg-9">
+        <h2 class="h4 fw-semibold">{% trans "Summary" %}</h2>
+        <p class="text-muted mb-4">{{ overview }}</p>
+
+        {% if trailer_url %}
+        <h2 class="h5 fw-semibold">{% trans "Trailer" %}</h2>
+        <div class="ratio ratio-16x9 mb-4">
+          <iframe src="{{ trailer_url }}" title="{% trans 'Trailer for {{ title }}' %}" allowfullscreen></iframe>
+        </div>
+        {% endif %}
+
+        <h2 class="h5 fw-semibold">Main cast</h2>
+        <div class="d-flex flex-wrap gap-3 mb-4">
+          {% for actor in credits %}
+            <div class="text-center" style="width:120px;">
+              {% if actor.profile_path %}
+                <img src="https://image.tmdb.org/t/p/w200{{ actor.profile_path }}" alt="{{ actor.name }}" class="img-fluid rounded-circle" style="height:120px; width:120px; object-fit:cover;">
+              {% else %}
+                <div class="bg-light text-secondary rounded d-flex align-items-center justify-content-center" style="height:120px; width:120px;">{% trans "No image" %}</div>
+              {% endif %}
+              <p class="mb-0 mt-2 fw-medium small">{{ actor.name }}</p>
+              <small class="text-muted">{{ actor.character }}</small>
+            </div>
+          {% endfor %}
+        </div>
+
+        <h2 class="h5 fw-semibold">{% trans "Available on" %}</h2>
+        {% if subscriptions %}
+            <h5 class="mt-3">{% trans "Subscription" %}</h5>
+            <div class="d-flex flex-wrap gap-3 mb-3">
+                {% for provider in subscriptions %}
+                <a href="{{ provider.link }}" target="_blank" style="text-decoration: none;">
+                    <div class="text-center d-flex flex-column justify-content-center" style="width:120px;">
+                    {% if provider.logo %}
+                        <img src="{{ provider.logo }}" alt="{{ provider.name }}" class="img-fluid rounded p-1" style="height:48px; aspect-ratio: 1/1; object-fit:contain;">
+                    {% else %}
+                        <div class="text-secondary rounded d-flex align-items-center justify-content-center" style="height:48px; aspect-ratio: 1/1; background-color: var(--secondary);">
+                        {% trans "No image" %}
+                        </div>
+                    {% endif %}
+                    <p class="mb-0 mt-2 small">{{ provider.name }}</p>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if buy_rent_list %}
+            <h5 class="mt-3">{% trans "Rent / Buy" %}</h5>
+            <div class="d-flex flex-wrap gap-3 mb-3">
+                {% for provider in buy_rent_list %}
+                <a href="{{ provider.link }}" target="_blank" style="text-decoration: none;">
+                    <div class="text-center d-flex flex-column justify-content-center" style="width:120px;">
+                    {% if provider.logo %}
+                        <img src="{{ provider.logo }}" alt="{{ provider.name }}" class="img-fluid rounded p-1" style="height:48px; aspect-ratio: 1/1; object-fit:contain;">
+                    {% else %}
+                        <div class="text-secondary rounded d-flex align-items-center justify-content-center" style="height:48px; aspect-ratio: 1/1; background-color: var(--secondary);">
+                        {% trans "No image" %}
+                        </div>
+                    {% endif %}
+                    <p class="mb-0 mt-2 small">{{ provider.name }}</p>
+                    <small class="text-muted">{{ provider.types }}</small>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+            {% else %}
+               <p class="text-muted mb-3">{% trans "Not yet available for streaming in this country." %}</p>
+            {% endif %}
+
+        <p class="small text-muted">
+            {% blocktrans with country=country %}
+                Country: <span class="fw-medium text-dark">{{ tmdb_lang }}</span></p>
+            {% endblocktrans %}
+      </div>
+    </div>
+  </div>
+  {% if user.is_authenticated %}
+  <div class="dropdown my-4">
+    <button class="btn btn-outline-primary dropdown-toggle" type="button" id="watchlistDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+      {% trans "Add to a watchlist" %}
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="watchlistDropdown">
+      {% for wl in user.owned_watchlists.all %}
+        <li>
+          <form 
+            method="post" 
+            action="{% url 'add_to_watchlist' wl.id %}" 
+            hx-post="{% url 'add_to_watchlist' wl.id %}" 
+            hx-swap="none"
+            class="px-3 py-1 d-inline"
+          >
+            {% csrf_token %}
+            <input type="hidden" name="movie_id" value="{{ id }}">
+            <input type="hidden" name="title" value="{{ title }}">
+            <input type="hidden" name="poster_url" value="{{ poster }}">
+            <input type="hidden" name="media_type" value="{{ media_type }}">
+            <button type="submit" class="dropdown-item">{{ wl.name }}</button>
+          </form>
+        </li>
+      {% empty %}
+        <li><span class="dropdown-item-text text-muted">{% trans "Aucune watchlist"%}</span></li>
+      {% endfor %}
+    </ul>
+  </div>
+    {% else %}
+    <a href="{% url 'login' %}" class="btn btn-outline-primary">{% trans "Connecte-toi pour ajouter"%}</a>
+    {% endif %}
+</div>
+{% endblock %}

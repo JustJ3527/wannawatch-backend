@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %} My watchlists — WannaWatch{% endblock %}<h2>My Watchlists</h2>
+{% block content %}
+<a href="{% url 'watchlist_create' %}" class="btn btn-primary mb-3">{% trans "New Watchlist"%}</a>
+<div class="list-group">
+    {% for wl in watchlists %}
+    <a href="{% url 'watchlist_detail' wl.pk %}" class="list-group-item list-group-item-action">
+        <strong>{{ wl.name }}</strong> - {{ wl.get_privacy_display }}
+    </a>
+    {% empty %}
+    <p>{% trans "No watchlists yet." %}</p>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Search" %} — WannaWatch{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h1 class="text-center mb-4">{% trans "🔎 Search for movies & series" %}</h1>
+
+  <form method="get" action="{% url 'search' %}" class="d-flex justify-content-center mb-4">
+    <input type="text" name="q" class="form-control w-50 me-2" placeholder="{% trans 'Title of movie or serie...' %}" value="{{ query|default:'' }}">
+    <button type="submit" class="btn btn-primary">{% trans "Search" %}</button>
+  </form>
+
+  {% if query %}
+    <h4 class="mb-3 text-center">
+      {% blocktrans with q=query %}
+        Results for "<strong>{{ q }}</strong>":
+      {% endblocktrans %}
+    </h4>
+  {% endif %}
+
+  {% if results %}
+    <div class="row g-4">
+      {% for item in results %}
+        <div class="col-6 col-md-3 col-lg-2">
+          <a href="{% url 'details' media_type=item.media_type tmdb_id=item.id%}" style="text-decoration: none;">
+            <div class="card bg-secondary text-center h-100" style="cursor: pointer;">
+              {% if item.poster %}
+                <img src="{{ item.poster }}" class="card-img-top" style="aspect-ratio:2/3; object-fit: cover" alt="{{ item.title }}">
+                {% else %}
+                <img src="https://t3.ftcdn.net/jpg/14/42/62/34/360_F_1442623435_xgewbjhcBhupOfG2C0ZVbXPCoH0c0eoD.jpg" class="card-img-top" style="aspect-ratio:2/3; object-fit: cover" alt="No image">
+              {% endif %}
+              <div class="card-body p-2">
+                <h6 class="card-title">{{ item.title }}</h6>
+                <p class="small mb-0">{{ item.media_type }} • {{ item.year }}</p>
+              </div>
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  {% elif query %}
+    {% blocktrans with q=query %}
+      <p class="text-center text-light mt-4">No result for {{ q }} 😕</p>
+    {% endblocktrans %}
+  {% endif %}
+</div>
+{% endblock %}
