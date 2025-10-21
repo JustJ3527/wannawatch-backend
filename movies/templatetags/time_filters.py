@@ -9,3 +9,9 @@ def duration_format(value):
     hours = value // 60
     minutes = value % 60
     return f"{hours}h{minutes:02d}" if hours else f"{minutes}min"
+
+@register.filter
+def year(value):
+    if not value:
+        return ""
+    return str(value)[:4]

@@ -1,1 +1,16 @@
-<h2>Hello {{ user.username }}</h2
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="container py-4">
+    <h2>{% trans "My Profile" %}</h2>
+  
+    <div id="profile-wrapper">
+        {% if edit %}
+            {% include "users/partials/profile_edit.html" %}
+        {% else %}
+            {% include "users/partials/profile_static.html" %}
+        {% endif %}
+    </div>
+  </div>
+{% endblock %}

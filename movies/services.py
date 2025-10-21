@@ -93,7 +93,6 @@ def get_tmdb_details(tmdb_id, media_type, lang="en"):
         "api_key": TMDB_API_KEY,
         "language": lang,
     }
-    print(url)
     response = requests.get(url, params=params)
     if response.status_code == 200:
         data = response.json()

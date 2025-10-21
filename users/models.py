@@ -5,6 +5,8 @@ from django.utils.translation import gettext_lazy as _
 
 from django.utils import timezone
 
+from .utils import get_avatar_upload_path, get_banner_upload_path, delete_old_file
+
 class customUserManager(BaseUserManager):
     def create_user(self, email, username, password=None, **extra_fields):
         if not email:
@@ -28,7 +30,10 @@ class customUser(AbstractUser):
     email = models.EmailField(unique=True, verbose_name=_("Email"))
     username = models.CharField(max_length=50, unique=True, verbose_name=_("Username"))
     bio = models.TextField(max_length=500, blank=True, verbose_name=_("Biography"))
-    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True, verbose_name=_("Avatar"))
+
+    avatar = models.ImageField(upload_to=get_avatar_upload_path, null=True, blank=True, verbose_name=_("Avatar"))
+    banner = models.ImageField(upload_to=get_banner_upload_path, null=True, blank=True, verbose_name=_("Banner"))
+
 
     is_active = models.BooleanField(default=True)
 
@@ -48,3 +53,10 @@ class customUser(AbstractUser):
     class Meta:
         verbose_name = 'User'
         verbose_name_plural = 'Users'
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            delete_old_file(self, "avatar")
+        
+        super().save(*args, **kwargs)
+    

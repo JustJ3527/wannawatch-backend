@@ -1,11 +1,12 @@
-import random
 
-from django.contrib.auth.hashers import make_password
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required, login_not_required
-from django.views.decorators.csrf import csrf_exempt
+from django.template.loader import render_to_string
+
+from django.utils.translation import gettext_lazy as _
 
 
 from rest_framework import generics, status
@@ -15,7 +16,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
 
-from .forms import CustomUserCreationForm, CustomLoginForm
+from .forms import CustomUserCreationForm, CustomLoginForm, ProfileEditForm
 from .serializers import RegisterSerializer, UserSerializer, ChangePasswordSerializer
 
 
@@ -53,9 +54,71 @@ def login_view(request):
         form = CustomLoginForm()
     return render(request, "users/login.html", {"form": form})
 
-@login_required(login_url="/login")
+def logout_view(request):
+    logout(request)
+    return redirect("home")
+
+def home_view(request):
+    if request.user:
+        user = request.user
+        return render(request, "users/home.html", {"user": user})
+    return redirect("home")
+
+
+def validate_username(request):
+    username = request.GET.get("username", "").strip()
+    valid = True
+    message = ""
+
+    if not username:
+        valid = False
+        message = _("Username cannot be empty.")
+    elif len(username) < 3:
+        valid = False
+        message = _("Username too short (min 3 characters).")
+    elif User.objects.filter(username__iexact=username).exclude(pk=request.user.pk).exists():
+        valid = False
+        message = _("This username is already taken.")
+    else:
+        message = _("This username is available!")
+
+    html = render_to_string("users/partials/username_feedback.html", {
+        "valid": valid,
+        "message": message,
+    })
+    return HttpResponse(html)
+
+
+@login_required
 def profile_view(request):
-    return render(request, "users/profile.html", {"user": request.user})
+    user = request.user
+
+    if request.headers.get("HX-Request"):
+        html = render_to_string("users/partials/profile_static.html", {"user": user})
+        return HttpResponse(html)
+
+    return render(request, "users/profile.html", {"user": user})
+
+@login_required
+def edit_profile(request):
+    user = request.user
+
+    if request.method == "POST":
+        form = ProfileEditForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            if request.headers.get("HX-Request"):
+                html = render_to_string("user/partials/profile_static.html", {"user": user})
+                return HttpResponse(html)
+            return redirect("profile")
+    else:
+        form = ProfileEditForm(instance=user)
+    
+    if request.headers.get("HX-Request"):
+            html = render_to_string("users/partials/profile_edit.html", {"form": form, "user": user})
+            return HttpResponse(html)
+
+    return render(request, "users/profile.html", {"form": form, "user": user, "edit": True})
 
 # ========================================
 # USER SETTINGS

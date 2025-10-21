@@ -7,10 +7,10 @@
 <h2>{{ watchlist.name }}</h2>
 <p>{{ watchlist.description }}</p>
 
-<h4>Movie</h4>
+<h4>Movie {{ item }}</h4>
 <ul class="list-group mb-3">
     {% for item in items %}
-        {% include "watchlists/partials/watchlist_item.html" %}
+        {% include "watchlists/partials/watchlist_item.html" with item=item %}
     {% empty %}
         <li class="list-group-item text-muted">{% trans "No movies yet."%}</li>
     {% endfor %}

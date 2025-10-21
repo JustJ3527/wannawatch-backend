@@ -111,7 +111,7 @@
             action="{% url 'add_to_watchlist' wl.id %}" 
             hx-post="{% url 'add_to_watchlist' wl.id %}" 
             hx-swap="none"
-            class="px-3 py-1 d-inline"
+            class="px-3 py-1"
           >
             {% csrf_token %}
             <input type="hidden" name="movie_id" value="{{ id }}">

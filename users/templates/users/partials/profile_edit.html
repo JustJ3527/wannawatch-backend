@@ -1,0 +1,56 @@
+{% load static i18n %}
+<form hx-post="{% url 'edit_profile' %}"
+      hx-target="#profile-wrapper"
+      hx-swap="innerHTML"
+      enctype="multipart/form-data"
+      class="card p-3"
+      >
+
+      {% csrf_token %}
+
+    <div class="mb-3 text-center">
+        {% if user.avatar %}
+            <img src="{{ user.avatar.url }}" alt="{{ user.username }}" class="rounded-circle mb-2" width="100" height="100">
+        {% else %}
+            <img src="{% static 'img/default.webp' %}" alt="{{ user.username }}" class="rounded-circle mb-2" width="100" height="100">
+        {% endif %}
+        {{ form.avatar }}
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">{% trans "Banner" %}</label>
+        {{ form.banner }}
+    </div>
+
+    <div class="mb-3">
+        <label for="id_username">{% trans "Username" %}</label>
+        <input 
+            type="text" 
+            name="username" 
+            id="id_username"
+            value="{{ form.username.value }}"
+            class="form-control"
+            hx-get="{% url 'validate_username' %}"
+            hx-trigger="keyup changed delay:400ms"
+            hx-target="#username-feedback"
+            hx-swap="innerHTML">
+        <div id="username-feedback" class="form-text text-muted"></div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">{% trans "Biography" %}</label>
+        {{ form.bio }}
+    </div>
+
+
+    <button type="submit" class="btn btn-success" id="submit-btn" disabled>{% trans "Save" %}</button>
+    <button type="button"
+    class="btn btn-secondary"
+    hx-get="{% url 'profile' %}"
+    hx-target="#profile-wrapper"
+    hx-swap="innerHTML"
+    hx-push-url="true">
+    {% trans "Cancel" %}
+</button>
+</form>
+<script src="{% static 'js/forms.js' %}"></script>

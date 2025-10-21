@@ -1,7 +1,46 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
 <h2>Inscription</h2>
-<form method="post">
+
+<form method="POST" id="signup-form">
   {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Créer un compte</button>
+
+  <div class="mb-3">
+    <label class="form-label">{% trans "Email" %}</label>
+    {{ form.email }}
+  </div>
+
+  <div class="mb-3">
+    <label for="id_username">{% trans "Username" %}</label><br>
+    <input 
+      type="text"
+      class="form-control"
+      placeholder="{% trans 'Username' %}" 
+      name="username" 
+      id="id_username"
+      value="{{ form.username.value|default_if_none:'' }}"
+      hx-get="{% url 'validate_username' %}"
+      hx-trigger="keyup changed delay:400ms"
+      hx-target="#username-feedback"
+      hx-swap="innerHTML"
+      data-valid="false">
+    <div id="username-feedback" class="form-text text-muted"></div>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">{% trans "Password" %}</label>
+    {{ form.password1 }}
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">{% trans "Confirm password" %}</label>
+    {{ form.password2 }}
+  </div>
+
+  <button type="submit" class="btn btn-primary">{% trans "Create account" %}</button>
 </form>
+
 <a href="{% url 'login' %}">Déjà un compte ? Connexion</a>
+
+{% endblock %}

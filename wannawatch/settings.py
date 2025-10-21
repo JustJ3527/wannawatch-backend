@@ -184,7 +184,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 
-LOGIN_REDIRECT_URL = "login"
+LOGIN_URL = "login"
 
 USE_I18N = True
 USE_L10N = True  # Active le format local (dates, nombres…)
@@ -200,3 +200,6 @@ LANGUAGES = [
 LOCALE_PATHS = [
     BASE_DIR / "locale",
 ]
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"

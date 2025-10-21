@@ -41,23 +41,14 @@ def watchlist_detail(request, pk):
     
     tmdbLang = get_tmdb_language()
 
-    items = []
-    for item in watchlist.items.all():
+    items = watchlist.items.all()
+    for item in items:
         details = get_tmdb_details(item.movie_id, item.media_type, lang=tmdbLang)
-        print(details)
         if details:
-            items.append({
-                "id": item.id,
-                "movie_id": item.movie_id,
-                "media_type": item.media_type,
-                "title": details["title"],
-                "poster": details["poster"],
-                "overview": details["overview"],
-                "release_date": details["release_date"],
-
-                "pk": pk,
-                "watchlist_pk": watchlist.pk,
-            })
+            item.tmdb_title = details.get("title")
+            item.tmdb_poster = details.get("poster")
+            item.tmdb_overview = details.get("overview")
+            item.tmdb_release_date = details.get("release_date")
 
     form = WatchlistItemForm()
 
@@ -95,7 +86,24 @@ def toggle_watched(request, pk, item_id):
     item.watched = not item.watched
     item.save()
 
+
     if request.headers.get("HX-Request"):
+        # --- Récupérer la langue TMDB
+        tmdbLang = get_tmdb_language()
+
+        # --- Récupérer les détails TMDB
+        details = get_tmdb_details(item.movie_id, item.media_type, lang=tmdbLang)
+        if details:
+            item.tmdb_title = details.get("title")
+            item.tmdb_poster = details.get("poster")
+            item.tmdb_overview = details.get("overview")
+            item.tmdb_release_date = details.get("release_date")
+        else:
+            item.tmdb_title = item.title
+            item.tmdb_poster = item.posyer
+            item.tmdb_overview = item.overview
+            item.tmdb_release_date = item.release_date
+
         html = render_to_string("watchlists/partials/watchlist_item.html", {"item": item})
         return HttpResponse(html)
 
